@@ -69,9 +69,13 @@ class MeatLogger:
         hskey = respline.split(':')[0]
 
         while True:
-            ws = MeatLoggerClient('wss://{0}/socket.io/1/websocket/{1}'.format(self.hostname, hskey), protocols=['http-only', 'chat'])
-            ws.connect()
-            ws.run_forever()
+            try:
+                ws = MeatLoggerClient('wss://{0}/socket.io/1/websocket/{1}'.format(self.hostname, hskey), protocols=['http-only', 'chat'])
+                ws.connect()
+                ws.run_forever()
+            except Exception as e:
+                logging.error(">>> Error {0}".format(e))
+                time.sleep(5)
 
 hostname = "chat.meatspac.es"
 ml = MeatLogger(hostname)
