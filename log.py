@@ -50,6 +50,8 @@ class MeatLoggerClient(WebSocketClient):
             else:
                 logging.error("Couldn't decode GIF that preambled with: {0}".format(gif_dataurl[0:len(preamble)]))
             sys.stdout.flush()
+        elif msg[0:2] == "7:":
+            self.close()
         else:
             logging.error("Something weird happened: {0}".format(msg))
 
@@ -75,7 +77,7 @@ class MeatLogger:
                 ws.run_forever()
             except Exception as e:
                 logging.error(">>> Error {0}".format(e))
-                time.sleep(5)
+            time.sleep(5)
 
 hostname = "chat.meatspac.es"
 ml = MeatLogger(hostname)
